@@ -1,0 +1,74 @@
+Polynomial model
+========================================================
+author: Rony Pikarski
+date: 20 Apr 2015
+
+Introduction
+========================================================
+
+- The dataset includes Speed and Stopping Distances of Cars
+
+- We are looking for a polynomial model that adequately approximates our data. 
+
+- Polynomial function of X is $$f(x)=\beta_0+\beta_1x+\beta_2x^2+\beta_3x^3+ ... +\beta_nx^n$$
+
+The degree is the value of the greatest exponent of any expression in the polynomial.
+
+Example: $f(x)=\beta_0+\beta_1x+\beta_2x^2$ is a 2nd degree of a polynomial
+
+
+Polynomial regression plot
+========================================================
+
+```{r, echo=FALSE}
+d <- seq(0, 25, length.out = 200)
+par(mfrow=c(2,2))
+plot(cars, xlab = "Speed (mph)", ylab = "Stopping distance (ft)",main = "1st degree of a polynomial",
+las = 1, xlim = c(0, 25))
+      fm <- lm(dist ~ poly(speed, degree=1), data = cars)
+      lines(d, predict(fm, data.frame(speed = d)), col = 1)
+
+plot(cars, xlab = "Speed (mph)", ylab = "Stopping distance (ft)",main = "2nd degree of a polynomial",
+las = 1, xlim = c(0, 25))
+      fm <- lm(dist ~ poly(speed, degree=2), data = cars)
+      lines(d, predict(fm, data.frame(speed = d)), col = 2)
+
+plot(cars, xlab = "Speed (mph)", ylab = "Stopping distance (ft)",main = "3rd degree of a polynomial",
+las = 1, xlim = c(0, 25))
+      fm <- lm(dist ~ poly(speed, degree=3), data = cars)
+      lines(d, predict(fm, data.frame(speed = d)), col = 3)
+
+```
+
+
+Polynomial models
+========================================================
+
+- Polynomial model degree = 1,  Adj. R^2 =`r summary(lm(dist ~ poly(speed, degree=1), data = cars))$adj.r.squared `
+```{r, echo=FALSE}
+fm <- lm(dist ~ poly(speed, degree=1), data = cars)
+library(knitr)        
+kable(as.data.frame(summary(fm)$coefficients), digits=1)
+```
+
+- Polynomial model degree = 2,  Adj. R^2 =`r summary(lm(dist ~ poly(speed, degree=2), data = cars))$adj.r.squared `
+```{r, echo=FALSE}
+fm <- lm(dist ~ poly(speed, degree=2), data = cars)
+library(knitr)        
+kable(as.data.frame(summary(fm)$coefficients), digits=1)
+```
+__Note:__ Coefficient beta2 is not significant
+
+Polynomial models (cont.) & Conclusions
+========================================================
+
+- Polynomial model degree = 3,  Adj. R^2 =`r summary(lm(dist ~ poly(speed, degree=3), data = cars))$adj.r.squared `
+```{r, echo=FALSE}
+fm <- lm(dist ~ poly(speed, degree=3), data = cars)
+library(knitr)        
+kable(as.data.frame(summary(fm)$coefficients), digits=1)
+```
+__Note:__ The coefficients beta2 and beta3 are not significant
+
+__Conclusion:__
+Coefficients beta_2 and beta_3 are not significant. For all models only beta_0 (Intersept) and beta_1 are significant.  
